@@ -24,6 +24,7 @@ rule all:
 
 
 rule ReadCounts:
+    container: "docker://ubuntu:jammy-20240911.1"
     input: 
         os.path.join(CWD, "inputs", "{sample}.fasta")
     output: 
@@ -56,6 +57,7 @@ rule SplitFasta:
         "fastasplit -c {params.chunks} -f {input} -o 1-chunks/"
 
 rule RunMinimap:
+    container: "docker://quay.io/biocontainers/minimap2:2.28--he4a0461_3"
     input:
         os.path.join(CWD, "1-chunks", "{sample}.fasta_chunk_000000{piece}")
     output:
@@ -79,6 +81,7 @@ rule RunMinimap:
 # MEGAN RMA prep and run
         
 rule SortSam:
+    container: "docker://ubuntu:jammy-20240911.1"
     input:
         os.path.join(CWD, "2-minimap", "{sample}.{piece}.sam")
     output:
